@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>शुभ दीपावली!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+html, body {
+  margin:0; padding:0; width:100%; height:100%; overflow:hidden;
+  background: radial-gradient(circle at top, #ffeb3b, #ff9800, #f44336);
+  font-family:'Great Vibes', cursive; color:white; text-align:center;
+  display:flex; justify-content:center; align-items:center; position:relative;
+}
+
+/* Message Box */
+.message-box {
+  max-width:700px; padding:40px 30px; background: rgba(0,0,0,0.35);
+  border-radius:35px; box-shadow:0 0 70px #fff, 0 0 120px #ff9800;
+  animation:glow 2.5s infinite alternate; position:relative; z-index:3;
+}
+@keyframes glow {
+  from {box-shadow:0 0 20px #ffeb3b;} to {box-shadow:0 0 60px #ff9800,0 0 100px #f44336;}
+}
+
+/* Heading individual letters */
+h1 { font-size:3em; margin-bottom:20px; display:inline-block; }
+h1 span { display:inline-block; animation:letterGlow 3s infinite; text-shadow:0 0 10px #fff; }
+@keyframes letterGlow {
+  0%,100%{text-shadow:0 0 15px #fff,0 0 30px #ffeb3b,0 0 50px #ff9800;}
+  50%{text-shadow:0 0 25px #fff,0 0 50px #ffeb3b,0 0 80px #ff9800;}
+}
+
+/* Quote */
+p { font-size:1.4em; line-height:2em; text-shadow:1px 1px 5px #00000050; animation:quoteGlow 4s infinite alternate;}
+@keyframes quoteGlow {
+  0%{text-shadow:1px 1px 5px #00000050,0 0 10px #fff;}
+  50%{text-shadow:2px 2px 10px #fff,0 0 20px #ffeb3b;}
+  100%{text-shadow:1px 1px 5px #00000050,0 0 10px #fff;}
+}
+span {font-weight:bold; color:#fffacd;}
+
+/* Photo */
+img { width:180px; height:180px; border-radius:50%; margin-bottom:20px;
+  border:5px solid #fff; box-shadow:0 0 40px #fff,0 0 80px #ffeb3b,0 0 120px #ff9800;
+  animation:photoGlow 3s infinite alternate;
+}
+@keyframes photoGlow {
+  0% {box-shadow:0 0 40px #fff,0 0 80px #ffeb3b,0 0 120px #ff9800;}
+  50% {box-shadow:0 0 60px #fff,0 0 100px #ffeb3b,0 0 150px #ff9800;}
+  100% {box-shadow:0 0 40px #fff,0 0 80px #ffeb3b,0 0 120px #ff9800;}
+}
+
+/* WhatsApp Button */
+button {
+  margin-top:25px; padding:14px 30px; font-size:1.2em;
+  border:none; border-radius:35px; background-color:#25D366; color:#fff;
+  cursor:pointer; box-shadow:0 0 25px #fff,0 0 40px #128C7E; transition:0.3s; z-index:3;
+}
+button:hover { transform:scale(1.1); box-shadow:0 0 45px #fff,0 0 70px #25D366,0 0 100px #128C7E; }
+
+/* Fireworks & Particles */
+.firework, .trail, .particle { position:absolute; border-radius:50%; pointer-events:none; z-index:1; }
+@keyframes explode {0%{transform:scale(0);opacity:1;} 80%{transform:scale(1.5);opacity:0.7;} 100%{transform:scale(2);opacity:0;}}
+
+@media(max-width:480px){
+  h1{font-size:2em;} p{font-size:1em;} button{padding:10px 20px; font-size:1em;} img{width:140px; height:140px;}
+}
+</style>
+</head>
+<body>
+
+<div class="message-box">
+  <img src="https://i.ibb.co/5h1kxh8D/cropped-circle-image-7.png" alt="Dhananjay">
+  <h1 id="heading">✨ शुभ दीपावली! ✨</h1>
+  <p>
+    हम जानते हैं कि आप वो <span>दीपक</span> हैं,<br>
+    जो सिर्फ अपने घर को नहीं,<br>
+    बल्कि अपने आस-पास के लोगों की जिंदगी को भी रोशन करते हैं।<br>
+    इस दिवाली, अपने <span>हौसले की रोशनी</span> फैलाएँ,<br>
+    और हर सपने को <span>सच करने की आग</span> जलाएँ।<br><br>
+    — <span>Dhananjay</span>
+  </p>
+  <button onclick="shareWhatsApp()">💚 WhatsApp पर Share करें</button>
+</div>
+
+<audio id="bg-music" src="https://www.dropbox.com/s/ia6skn0cw4ww06wxyurd2/Shayari-Background-Music-Mp3-Download-Pagalworld.mp3?dl=1" loop></audio>
+<button id="play-music" style="position:fixed;bottom:20px;right:20px;padding:10px 20px;font-size:1em;border-radius:25px;border:none;background:#ffeb3b;color:#333;cursor:pointer;box-shadow:0 0 20px #fff;">🎵 Play Music</button>
+
+<script>
+// Split heading into spans
+const heading=document.getElementById('heading'); 
+heading.innerHTML=heading.textContent.split('').map(c=>`<span>${c}</span>`).join('');
+
+// Fireworks with multi-colored trails
+function createFirework(){
+  let fw=document.createElement('div'); fw.classList.add('firework');
+  let size=Math.random()*20+15; fw.style.width=fw.style.height=size+'px';
+  fw.style.top=Math.random()*100+'%'; fw.style.left=Math.random()*100+'%';
+  let colors=['#ffeb3b','#ff9800','#f44336','#00f','#0f0','#0ff','#ff00ff','#ffa500'];
+  fw.style.background=`radial-gradient(circle, ${colors[Math.floor(Math.random()*colors.length)]} 0%, transparent 70%)`;
+  fw.style.animation='explode 1.8s linear';
+  document.body.appendChild(fw);
+
+  // Multi trails
+  for(let i=0;i<6;i++){
+    let tr=document.createElement('div'); tr.classList.add('trail');
+    tr.style.width=tr.style.height='6px';
+    tr.style.top=fw.offsetTop+'px'; tr.style.left=fw.offsetLeft+'px';
+    tr.style.background=fw.style.background;
+    tr.style.opacity=0.9; tr.style.transition='all 1.2s linear';
+    document.body.appendChild(tr);
+    setTimeout(()=>{ tr.remove(); },1200);
+  }
+  setTimeout(()=>{ fw.remove(); },1800);
+}
+setInterval(createFirework,350);
+
+// Background particles with depth layers
+for(let i=0;i<80;i++){
+  let p=document.createElement('div'); p.classList.add('particle');
+  p.style.top=Math.random()*100+'%'; p.style.left=Math.random()*100+'%';
+  p.style.width=p.style.height=Math.random()*5+2+'px';
+  p.style.background='rgba(255,255,255,0.5)'; p.style.animation='moveParticle '+(5+Math.random()*5)+'s linear infinite';
+  document.body.appendChild(p);
+}
+const style=document.createElement('style');
+style.innerHTML=`@keyframes moveParticle{0%{transform:translateY(0);}100%{transform:translateY(-800px) translateX(100px);}}`;
+document.head.appendChild(style);
+
+// Interactive sparkles
+document.addEventListener('mousemove',e=>createSparkle(e));
+document.addEventListener('touchmove',e=>createSparkle(e.touches[0]));
+function createSparkle(e){
+  let s=document.createElement('div'); s.classList.add('particle');
+  s.style.top=e.clientY+'px'; s.style.left=e.clientX+'px';
+  s.style.width=s.style.height='6px';
+  s.style.background='radial-gradient(circle, #fff 0%, transparent 70%)';
+  s.style.animation='fade 0.6s linear forwards';
+  document.body.appendChild(s); setTimeout(()=>s.remove(),600);
+}
+style.innerHTML+=`@keyframes fade{0%{opacity:1;transform:scale(1);}100%{opacity:0;transform:scale(2);}}`;
+document.head.appendChild(style);
+
+// WhatsApp Share
+function shareWhatsApp(){
+  let text = encodeURIComponent("देखिए ये सुंदर दिवाली शुभकामना संदेश! 🎉✨ " + window.location.href);
+  window.open("https://api.whatsapp.com/send?text=" + text, "_blank");
+}
+
+// Music
+const audio=document.getElementById('bg-music'); const playBtn=document.getElementById('play-music');
+playBtn.addEventListener('click',()=>{audio.play(); playBtn.style.display='none';});
+window.addEventListener('load',()=>{audio.play().catch(()=>{});});
+</script>
+</body>
+</html>
